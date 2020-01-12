@@ -1,0 +1,59 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar color="primary"></mat-toolbar>
+    <mat-nav-list>
+        <h3 matSubheader>Notes</h3>
+        <mat-list>
+            <mat-list-item *ngFor="let message of notes | filter: searchText;let i=index">
+              <a (click)="selectedRow(i)">
+              <h3 matLine style="font-weight: bold"> {{message.title}} </h3>
+              <p matLine>
+                <span> {{message.text}} </span>
+              </p>
+            <mat-divider></mat-divider>
+          </a>
+            </mat-list-item>
+         </mat-list>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>NotesApp</span>
+      <button style="margin-left: 20px"
+        type="button"
+        mat-icon-button
+        (click)="addNotes()">
+        <mat-icon>note_add</mat-icon>
+      </button>
+      <button style="margin-left: 20px"
+        type="button"
+        mat-icon-button
+        (click)="deleteNotes()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <span class="spacer"></span>
+      <mat-icon>search</mat-icon>
+      <mat-form-field appearance="standard" color="white">
+        
+        &nbsp;&nbsp;
+        <input matInput placeholder="search" [(ngModel)]="searchText">
+      </mat-form-field>
+      </mat-toolbar>
+      <ng-content></ng-content>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
